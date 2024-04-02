@@ -16,12 +16,10 @@ class ArbolB {
         List<Nodo> hijos;
 
         Nodo() {
-
             this.claves = new ArrayList<>(grado - 1);
             this.hijos = new ArrayList<>(grado);
         }
     }
-
 
     public void insertar(int clave) {
         insertarRecur(raiz, clave);
@@ -71,8 +69,7 @@ class ArbolB {
             } else {
                 Nodo encontrado = encontrarPadre(nodo, hijo);
                 if (encontrado != null) {
-                    return encontrado;
-                }
+                    return encontrado;}
             }
         }
         return null;
@@ -89,7 +86,6 @@ class ArbolB {
             dividirNodo(padre);
         }
     }
-
 
     public boolean buscar(int clave) {
         return buscarRecursivo(raiz, clave);
@@ -112,9 +108,30 @@ class ArbolB {
         return buscarRecursivo(nodo.hijos.get(i), clave);
     }
 
+    public void eliminar(int clave) {
+        eliminarRecursivo(raiz, clave);
+    }
+
+    private void eliminarRecursivo(Nodo nodo, int clave) {
+        int i = 0;
+        while (i < nodo.claves.size() && clave > nodo.claves.get(i)) {
+            i++;
+        }
+
+        if (i < nodo.claves.size() && clave == nodo.claves.get(i)) {
+            // Si la clave está presente en el nodo actual
+            nodo.claves.remove(i);
+        } else {
+            // Si la clave podría estar en alguno de los hijos del nodo actual
+            if (!nodo.hijos.isEmpty()) {
+                eliminarRecursivo(nodo.hijos.get(i), clave);
+            }
+        }
+    }
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print("Ingrese el grado del árbol B: ");
+        System.out.print("Ingrese el grado deL Arbol B: ");
         int grado = scanner.nextInt();
         ArbolB arbolB = new ArbolB(grado);
         while (true) {
@@ -127,30 +144,31 @@ class ArbolB {
             int opcion = scanner.nextInt();
             switch (opcion) {
                 case 1:
-                    System.out.print("Ingrese numero insertar: ");
+                    System.out.print("Ingrese nmero a insertar: ");
                     int claveInsertar = scanner.nextInt();
                     arbolB.insertar(claveInsertar);
-                    System.out.println("numero insertado correctamente.");
+                    System.out.println("Nnmero insertado correctamente.");
                     break;
                 case 2:
                     System.out.print("Ingrese el numero a eliminar:");
                     int claveEliminar = scanner.nextInt();
+                    arbolB.eliminar(claveEliminar);
                     System.out.println("El numero ha sido eliminado.");
                     break;
                 case 3:
                     System.out.print("Ingrese el numero a buscar: ");
                     int claveBuscar = scanner.nextInt();
                     if (arbolB.buscar(claveBuscar)) {
-                        System.out.println("el numero se encuentra el el arbol.");
+                        System.out.println("El numero se encuentra en el árbol.");
                     } else {
-                        System.out.println("No esta en el arbol ingrese otro num.");
+                        System.out.println("No está en el árbol, ingrese otro número.");
                     }
                     break;
                 case 4:
                     System.out.println("Saliendo... :D");
                     System.exit(0);
                 default:
-                    System.out.println("Opción inválida, intente de nuevo.");
+                    System.out.println("Opción inválida.");
             }
         }
     }
